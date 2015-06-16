@@ -1,0 +1,10 @@
+{
+  "name": "log-analytics",
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.4"
+  }
+}
