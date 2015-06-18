@@ -3,12 +3,23 @@
  */
 (function() {
 
-    var HomeController = function ($scope) {
-        alert("at home");
+    var HomeController = function ($scope, $log, RequestFactory) {
+        $scope.request = [];
+
+        function init(){
+            RequestFactory.getRequest()
+                .success(function(request) {
+                    $scope.request = request;
+                })
+                .error(function(data, status, headers, config) {
+                    $log.log(data.error + ' ' + status);
+                });
+        }
+
+        init();
     };
 
-    HomeController.$inject = ['$scope'];
-    angular.module('analyticsApp')
-        .controller('HomeController', HomeController);
+    HomeController.$inject = ['$scope', '$log', 'RequestFactory'];
+    angular.module('analyticsApp').controller('HomeController', HomeController);
 
 }());

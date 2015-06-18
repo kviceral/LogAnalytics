@@ -4,7 +4,6 @@ import util.VisitorsCalculator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by KrisViceral on 14/06/2015.
