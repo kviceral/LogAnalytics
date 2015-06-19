@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import util.LogFileParser;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -23,8 +25,9 @@ public class RequestResource {
     }
 
     @RequestMapping("/api/requests")
-    public Request getRequestWithSampleLog() {
-        return null;
+    public ArrayList<Request> getRequestWithSampleLog() throws IOException{
+        LogFileParser logFileParser = new LogFileParser();
+        return logFileParser.getRequests();
     }
 
     //Take in a file and regenate UI
