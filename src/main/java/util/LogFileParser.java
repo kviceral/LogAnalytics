@@ -27,7 +27,7 @@ public class LogFileParser {
 
     //Instantiate by sending a file
     public LogFileParser(String placeholder){
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Feature not supported yet");
     }
 
     public ArrayList<Request> getRequests() {

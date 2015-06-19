@@ -33,7 +33,7 @@ public class RequestResource {
     //Take in a file and regenate UI
     @RequestMapping(value = "/api/requests", method = RequestMethod.POST)
     public Request getRequestsWithGivenFile() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Feature not supported yet");
     }
 
     private Request createTestResource(){
