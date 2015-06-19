@@ -38,7 +38,7 @@ public class VisitorsCalculatorUnitTest {
     }
 
     @Test public void
-    noOfVisitsPerIPAddress_should_return_3_given_3_instances_of_192_168_0_0(){
+    noOfVisitsPerIPAddress_should_return_3_given_192_168_0_0(){
 
         String visitorToCheck = "192.168.0.0";
 

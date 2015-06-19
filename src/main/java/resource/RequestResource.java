@@ -1,7 +1,9 @@
 package resource;
 
 import domain.Request;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,17 @@ public class RequestResource {
     @RequestMapping("/api/request")
     public Request request() {
         return createTestResource();
+    }
+
+    @RequestMapping("/api/requests")
+    public Request getRequestWithSampleLog() {
+        return null;
+    }
+
+    //Take in a file and regenate UI
+    @RequestMapping(value = "/api/requests", method = RequestMethod.POST)
+    public Request getRequestsWithGivenFile() {
+        throw new UnsupportedOperationException();
     }
 
     private Request createTestResource(){

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by KrisViceral on 14/06/2015.
+ * Created by KrisViceral on 18/06/2015.
  */
 public class VisitorsCalculator {
 
@@ -51,5 +51,4 @@ public class VisitorsCalculator {
     private static boolean isUnique(String ipAddress, HashMap<String,Integer> ipAddresses) {
         return ipAddresses.containsKey(ipAddress);
     }
-
 }
