@@ -13,6 +13,19 @@ public class Request {
     private ArrayList<String> visitors; //IPAddress
     private LocalDateTime date;
 
+    public Request(ArrayList<String> visitors, LocalDateTime date){
+        this.visitors = visitors;
+        this.date = date;
+    }
+
+    public Request(LocalDateTime date){
+        this.date = date;
+    }
+
+    public Request(){
+
+    }
+
     public ArrayList<String> getVisitors() {
         return visitors;
     }
