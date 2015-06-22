@@ -15,24 +15,36 @@
 
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                <p class="lead">Showing the Requests Per Hour Given a Log File</p>
+                <p>Parses a <abbr title="Common Log File" class="initialism">CLF</abbr> log file from
+                a Spring Boot-Based REST web service. Angular and Bootstrap is used on the frontend with the help
+                of Chart js. The data is shown in the table further below. To see the chart, click the button below.</p>
+            </div>
+        </div>
+
+        <!-- I would prefer to show/hide this whole section when the button is clicked (for better UX)
+            but Angular show/hide or jQuery show/hide does something funky where the chart would be hidden
+            then when you resize the browser, the chart grows and grows-->
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <button class="btn btn-danger btn-lg btn-block"
+                        ng-click="initChart()" ng-hide="chartInitialized === true">
+                    Show Me A Chart!
+                </button>
+                <hr ng-hide="chartInitialized === true">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Request Histogram</h3>
                     </div>
                     <div class="panel-body">
                         <canvas id="myChart" height="400"></canvas>
-                        <button ng-click="initChart()">
-                            Initialize Chart
-                        </button>
                     </div>
                 </div>
-
-                <hr>
             </div>
         </div>
 
         <div class="alert alert-info" role="alert" ng-hide="requests.length > 0">
-            There are no requests.
+            Something went wrong :( There are no requests.
         </div>
 
         <div class="row" ng-hide="requests.length < 0">
@@ -58,7 +70,9 @@
                                 <td>{{r.date.hour}}</td>
                                 <td>{{r.totalUniqueVisitors}}</td>
                                 <td>
-                                    {{r.visitors}}
+                                    <ul>
+                                        <li ng-repeat="v in r.visitors track by $index">{{v}}</li>
+                                    </ul>
                                 </td>
                             </tr>
                         </table>
@@ -67,7 +81,9 @@
             </div>
         </div>
 
-
+    <!-- Obnoxious Footer-->
+    <hr>
+    <p><small> <a href="http://krisviceral.com">krisviceral.com</a></small></p>
 
     </div>
     <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
@@ -82,6 +98,7 @@
     <script type="text/javascript" src="./app/services/RequestFactory.js"></script>
 
     <!--Other Utils-->
+    <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./bower_components/Chart.js/Chart.min.js"></script>
 </body>
 </html>
