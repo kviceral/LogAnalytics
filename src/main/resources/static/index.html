@@ -4,13 +4,70 @@
     <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body ng-app="analyticsApp">
-    <div class="container" ng-controller="HomeController">
-        <div class="page-header">
-            <h1>Log Analytics</h1>
+    <div class="container-fluid" ng-controller="HomeController">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="page-header">
+                    <h1>Log Analytics</h1>
+                </div>
+            </div>
         </div>
-        <div class="alert alert-info" role="alert" ng-hide="items && items.length > 0">
-            There are no items yet.
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Request Histogram</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="myChart" height="400"></canvas>
+                        <button ng-click="initChart()">
+                            Initialize Chart
+                        </button>
+                    </div>
+                </div>
+
+                <hr>
+            </div>
         </div>
+
+        <div class="alert alert-info" role="alert" ng-hide="requests.length > 0">
+            There are no requests.
+        </div>
+
+        <div class="row" ng-hide="requests.length < 0">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Request Data</h3>
+                    </div>
+                    <div class="panel-body">
+                        The table below shows the data visualized in the graph above.
+                        <hr>
+                        <table class="table table-hover table-condensed table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <td><strong>Date</strong></td>
+                                    <td><strong>Hour (24h)</strong></td>
+                                    <td><strong>Total Unique Visits</strong></td>
+                                    <td><strong>Visitors</strong></td>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="r in requests">
+                                <td>{{r.date.month}} {{r.date.monthValue}}, {{r.date.year}}</td>
+                                <td>{{r.date.hour}}</td>
+                                <td>{{r.totalUniqueVisitors}}</td>
+                                <td>
+                                    {{r.visitors}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
     </div>
     <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
@@ -23,5 +80,8 @@
 
     <!-- Services -->
     <script type="text/javascript" src="./app/services/RequestFactory.js"></script>
+
+    <!--Other Utils-->
+    <script type="text/javascript" src="./bower_components/Chart.js/Chart.min.js"></script>
 </body>
 </html>

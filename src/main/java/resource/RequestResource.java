@@ -1,7 +1,6 @@
 package resource;
 
 import domain.Request;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +24,7 @@ public class RequestResource {
     }
 
     @RequestMapping("/api/requests")
-    public ArrayList<Request> getRequestWithSampleLog() throws IOException{
+    public ArrayList<Request> getRequestWithSampleLog2() throws IOException{
         LogFileParser logFileParser = new LogFileParser();
         return logFileParser.getRequests();
     }
@@ -37,7 +36,6 @@ public class RequestResource {
     }
 
     private Request createTestResource(){
-
         Request request = new Request();
 
         ArrayList<String> visitors = new ArrayList<>();

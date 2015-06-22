@@ -33,6 +33,7 @@ public class LogFileParser {
         logFile = new ArrayList<>();
         InputStream inputStream = getClass().getResourceAsStream(SAMPLE_FILE_FILE_PATH);
         init(inputStream);
+        this.requests = parseLogFile(getLogFile());
     }
 
     //Instantiate by sending a file
