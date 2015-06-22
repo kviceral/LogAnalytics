@@ -41,12 +41,6 @@ public class LogFileParserUnitTest {
     }
 
     @Test public void
-    getRequests_should_return_null(){
-        assertThat(logFileParser.getRequests(), nullValue());
-    }
-
-
-    @Test public void
     mapJsonToApacheAccess_should_return_apacheaccess_given_json(){
         String json = "{\"BASE10NUM\":3401,\"COMMONAPACHELOG\":\"172.16.42.68 - AWAY [08/May/2015:12:40:04 -0800] \\\"GET /scripts/iisadmin/ism.dll?http/serv HTTP/1.0\\\" 200 3401\",\"HOSTNAME\":\"172.16.42.68\",\"HOUR\":12,\"INT\":-800,\"MINUTE\":40,\"MONTH\":\"May\",\"MONTHDAY\":8,\"SECOND\":4,\"TIME\":\"12:40:04\",\"USERNAME\":\"AWAY\",\"YEAR\":2015,\"auth\":\"AWAY\",\"bytes\":3401,\"clientip\":\"172.16.42.68\",\"httpversion\":\"1.0\",\"ident\":\"-\",\"request\":\"/scripts/iisadmin/ism.dll?http/serv\",\"response\":200,\"timestamp\":\"08/May/2015:12:40:04 -0800\",\"verb\":\"GET\"}\n";
         String ip = "172.16.42.68";
