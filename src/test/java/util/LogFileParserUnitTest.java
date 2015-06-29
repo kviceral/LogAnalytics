@@ -19,9 +19,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class LogFileParserUnitTest {
 
     private LogFileParser logFileParser;
+    private static final String ACCESS_LOG_FILE_PATH = "/sample/access.log";
 
-    @Before
-    public void prepare(){
+    /*
+        Test Preparations
+     */
+    private void prepareWithSampleFile(){
         try {
             logFileParser = new LogFileParser();
         }
@@ -29,22 +32,26 @@ public class LogFileParserUnitTest {
             e.printStackTrace();
         }
     }
-
-    @Test public void
-    getLogFile_should_return_arraylist_with_string_with_ip_172_21_13_45(){
-
-        String line = "172.16.42.68 - AWAY [08/May/2015:13:32:04 -0800] \"GET /scripts/iisadmin/ism.dll?http/serv" +
-                " HTTP/1.0\" 200 3401";
-
-        ArrayList<String> logFile = logFileParser.getLogFile();
-        assertThat(logFile.contains(line), is(true));
+    private void prepareWithGivenFile(){
+        try {
+            logFileParser = new LogFileParser(ACCESS_LOG_FILE_PATH);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @Test public void
     mapJsonToApacheAccess_should_return_apacheaccess_given_json(){
-        String json = "{\"BASE10NUM\":3401,\"COMMONAPACHELOG\":\"172.16.42.68 - AWAY [08/May/2015:12:40:04 -0800] \\\"GET /scripts/iisadmin/ism.dll?http/serv HTTP/1.0\\\" 200 3401\",\"HOSTNAME\":\"172.16.42.68\",\"HOUR\":12,\"INT\":-800,\"MINUTE\":40,\"MONTH\":\"May\",\"MONTHDAY\":8,\"SECOND\":4,\"TIME\":\"12:40:04\",\"USERNAME\":\"AWAY\",\"YEAR\":2015,\"auth\":\"AWAY\",\"bytes\":3401,\"clientip\":\"172.16.42.68\",\"httpversion\":\"1.0\",\"ident\":\"-\",\"request\":\"/scripts/iisadmin/ism.dll?http/serv\",\"response\":200,\"timestamp\":\"08/May/2015:12:40:04 -0800\",\"verb\":\"GET\"}\n";
+        String json = "{\"BASE10NUM\":3401,\"COMMONAPACHELOG\":\"172.16.42.68 - AWAY [08/May/2015:12:40:04 -0800] \\\"" +
+                "GET /scripts/iisadmin/ism.dll?http/serv HTTP/1.0\\\" 200 3401\",\"HOSTNAME\":\"172.16.42.68\",\"HOUR\":" +
+                "12,\"INT\":-800,\"MINUTE\":40,\"MONTH\":\"May\",\"MONTHDAY\":8,\"SECOND\":4,\"TIME\":\"12:40:04\",\"" +
+                "USERNAME\":\"AWAY\",\"YEAR\":2015,\"auth\":\"AWAY\",\"bytes\":3401,\"clientip\":\"172.16.42.68\",\"" +
+                "httpversion\":\"1.0\",\"ident\":\"-\",\"request\":\"/scripts/iisadmin/ism.dll?http/serv\",\"response" +
+                "\":200,\"timestamp\":\"08/May/2015:12:40:04 -0800\",\"verb\":\"GET\"}\n";
         String ip = "172.16.42.68";
 
+        prepareWithSampleFile();
         ApacheAccess apacheAccess = logFileParser.mapJsonToApacheAccess(json);
         assertThat(apacheAccess.getClientip(), equalTo(ip));
     }
@@ -52,15 +59,33 @@ public class LogFileParserUnitTest {
     @Test public void
     parseLogFile_should_return_requests_with_given_IP(){
         String userIP = "127.20.30.11";
-        ArrayList<Request> requests = logFileParser.parseLogFile(logFileParser.getLogFile());
-        boolean doesRequestContainUserIP = false;
 
+        prepareWithSampleFile();
+        ArrayList<Request> requests = logFileParser.getRequests();
+        boolean doesRequestContainUserIP = doesIPExistInRequest(userIP, requests);
+        assertThat(doesRequestContainUserIP, is(true));
+    }
+
+    @Test public void
+    parseLogFile_given_file_should_return_requests_with_given_IP(){
+        String userIP = "180.153.163.191";
+
+        prepareWithGivenFile();
+        ArrayList<Request> requests = logFileParser.getRequests();
+        boolean doesRequestContainUserIP = doesIPExistInRequest(userIP, requests);
+        assertThat(doesRequestContainUserIP, is(true));
+    }
+
+
+
+    private boolean doesIPExistInRequest(String IP, ArrayList<Request> requests){
         for (Request request: requests){
             ArrayList<String> visitors = request.getVisitors();
-            doesRequestContainUserIP = visitors.contains(userIP);
+            if (visitors.contains(IP)){
+                return true;
+            }
         }
-
-        assertThat(doesRequestContainUserIP, is(true));
+        return false;
     }
 
 }

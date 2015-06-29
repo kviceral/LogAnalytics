@@ -7,7 +7,7 @@
         var factory = {};
 
         factory.getRequests = function() {
-            return $http.get('/api/requests');
+            return $http.get('/api/requests/access');
         };
 
         return factory;

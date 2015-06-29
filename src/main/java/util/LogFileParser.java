@@ -29,16 +29,12 @@ public class LogFileParser {
 
     //Instantiate with sample data
     public LogFileParser() throws IOException{
-
-        logFile = new ArrayList<>();
-        InputStream inputStream = getClass().getResourceAsStream(SAMPLE_FILE_FILE_PATH);
-        init(inputStream);
-        this.requests = parseLogFile(getLogFile());
+        init(SAMPLE_FILE_FILE_PATH);
     }
 
     //Instantiate by sending a file
-    public LogFileParser(String placeholder){
-        throw new UnsupportedOperationException("Feature not supported yet");
+    public LogFileParser(String filePath) throws IOException{
+        init(filePath);
     }
 
     public ArrayList<Request> getRequests() {
@@ -49,7 +45,13 @@ public class LogFileParser {
         return logFile;
     }
 
-    private void init(InputStream inputStream) throws IOException{
+    private void init(String filePath) throws IOException{
+        logFile = new ArrayList<>();
+        requests = new ArrayList<>();
+
+        InputStream inputStream = getClass().getResourceAsStream(filePath);
+        GrokUtil grokUtil = new GrokUtil();
+
         if (inputStream == null) {
             throw new IOException("File Not Found");
         } else {
@@ -58,46 +60,33 @@ public class LogFileParser {
             try {
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
-                    logFile.add(line);
+
+                    String json = grokUtil.parseApacheLogLine(line);
+                    ApacheAccess apacheAccess = mapJsonToApacheAccess(json);
+
+                    LocalDateTime dateTime = roundDownOnHour(apacheAccess.getTimestamp());
+                    Request existingRequest = findRequestWithDateTime(dateTime);
+
+                    if(existingRequest != null){
+                        existingRequest.getVisitors().add(apacheAccess.getClientip());
+                    }else{
+                        ArrayList<String> visitors = new ArrayList<>();
+                        visitors.add(apacheAccess.getClientip());
+
+                        Request request = new Request(visitors, dateTime);
+                        requests.add(request);
+                    }
                 }
 
-                requests = new ArrayList<>();
-                parseLogFile(logFile);
+
             } catch (IOException ex) {
                 throw new IOException(ex);
-            }
-        }
-    }
-
-    public ArrayList<Request> parseLogFile(ArrayList<String> logFile){
-
-        GrokUtil grokUtil = new GrokUtil();
-
-        for(String logLine: logFile){
-            try{
-                String json = grokUtil.parseApacheLogLine(logLine);
-                ApacheAccess apacheAccess = mapJsonToApacheAccess(json);
-
-                LocalDateTime dateTime = roundDownOnHour(apacheAccess.getTimestamp());
-                Request existingRequest = findRequestWithDateTime(dateTime);
-
-                if(existingRequest != null){
-                    existingRequest.getVisitors().add(apacheAccess.getClientip());
-                }else{
-                    ArrayList<String> visitors = new ArrayList<>();
-                    visitors.add(apacheAccess.getClientip());
-
-                    Request request = new Request(visitors, dateTime);
-                    requests.add(request);
-                }
-
-            }catch (GrokException e){
+            } catch (GrokException e) {
                 e.printStackTrace();
             }
         }
-
-        return requests;
     }
+
 
     private LocalDateTime roundDownOnHour(String timestamp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_FORMAT);

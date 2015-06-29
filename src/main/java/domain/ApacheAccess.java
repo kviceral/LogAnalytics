@@ -2,8 +2,6 @@ package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.awt.*;
-
 /**
  * Created by KrisViceral on 21/06/2015.
  */

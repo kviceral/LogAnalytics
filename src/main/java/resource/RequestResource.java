@@ -16,40 +16,25 @@ import java.util.ArrayList;
  */
 
 @RestController
+@RequestMapping("/api/requests/")
 public class RequestResource {
+    private static final String ACCESS_LOG_FILE_PATH = "/sample/access.log";
 
-    @RequestMapping("/api/request")
-    public Request request() {
-        return createTestResource();
-    }
-
-    @RequestMapping("/api/requests")
-    public ArrayList<Request> getRequestWithSampleLog2() throws IOException{
+    @RequestMapping(value = "sample", method = RequestMethod.GET)
+    public ArrayList<Request> getRequestWithSampleLog() throws IOException{
         LogFileParser logFileParser = new LogFileParser();
         return logFileParser.getRequests();
     }
 
+    @RequestMapping(value = "access", method = RequestMethod.GET)
+    public ArrayList<Request> getRequestWithAccessLog() throws IOException{
+        return new LogFileParser(ACCESS_LOG_FILE_PATH).getRequests();
+    }
+
     //Take in a file and regenate UI
-    @RequestMapping(value = "/api/requests", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public Request getRequestsWithGivenFile() {
         throw new UnsupportedOperationException("Feature not supported yet");
     }
 
-    private Request createTestResource(){
-        Request request = new Request();
-
-        ArrayList<String> visitors = new ArrayList<>();
-        visitors.add("192.168.0.0");
-        visitors.add("192.168.2.1");
-        visitors.add("192.170.3.5");
-        visitors.add("192.168.0.0");
-        visitors.add("192.168.0.0");
-        visitors.add("192.168.0.6");
-        request.setVisitors(visitors);
-
-        LocalDateTime jan1st = LocalDateTime.of(2014, Month.JANUARY, 1, 10, 0);
-        request.setDate(jan1st);
-
-        return request;
-    }
 }
