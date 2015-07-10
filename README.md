@@ -2,7 +2,7 @@
 Programming Kata: Given an apache log file, show the unique requests per hour.
 
 ##Demo
-TBD
+[Live Demo](http://log.helloima.ninja)
 
 ##Info
 Reading up Quora when I saw an interesting [problem](http://qr.ae/7ApmM1). 
@@ -19,10 +19,30 @@ Small list of some technologies/workflow used:
 * Github
 * Docker
 
-##How To Build
-Download the project, import into your IDE, install bower components, run spring boot (LogAnalyticsApplication.java)
-
-##How To Deploy
+##Code Explained
 TBD
 
+##How To Build
+* Download the project
+* Import into your favorite IDE
+* Install bower components
+* Perform maven clean-install
+
+##How To Deploy (Local)
+* Run spring boot (LogAnalyticsApplication.java)
+
+##Latest Version
+* Improved speed
+* Larger sample log file
+
+##Todo
+* Deploy latest version
+* Mask the ui elements during ajax load
+* Change the graph size for mobile
+* Improve speed further
+* Feature: drop a text file and render a graph
+* Display/download the text file used in the graph
+
 ##Issues
+* Ui shows wrong monthday
+* Graph placeholder not hiding (angular ng-hide)
