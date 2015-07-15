@@ -20,7 +20,7 @@ Small list of some technologies/workflow used:
 * Docker
 
 ##Code Explained
-TBD
+http://krisviceral.com/explaining-the-code-log-analytics-kata/
 
 ##How To Build
 * Download the project
